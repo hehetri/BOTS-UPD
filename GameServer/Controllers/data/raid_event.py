@@ -1,12 +1,20 @@
 import datetime
 import math
 
+import MySQL.Interface as MySQL
+
 RAID_EVENT_MAP_ID = 52
 RAID_EVENT_NAME = 'O Cerco da Fenda Sombria'
 
 
 def _fetch_next_raid_event(_args, now, map_id):
-    _args['mysql'].execute(
+    mysql_connection = None
+    mysql_cursor = _args.get('mysql')
+    if mysql_cursor is None:
+        mysql_connection = MySQL.get_connection()
+        mysql_cursor = mysql_connection.cursor(dictionary=True)
+
+    mysql_cursor.execute(
         """SELECT `map_id`, `start_time`, `end_time`
         FROM `raid_event`
         WHERE `map_id` = %s AND `end_time` >= %s
@@ -15,7 +23,10 @@ def _fetch_next_raid_event(_args, now, map_id):
             map_id,
             now
         ])
-    return _args['mysql'].fetchone()
+    row = mysql_cursor.fetchone()
+    if mysql_connection:
+        mysql_connection.close()
+    return row
 
 
 def build_raid_event_message(_args, now=None, map_id=RAID_EVENT_MAP_ID):
