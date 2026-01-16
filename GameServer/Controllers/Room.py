@@ -21,7 +21,7 @@ from GameServer.Controllers.data.game import *
 from GameServer.Controllers.data.military import MILITARY_MAP_TABLE
 from GameServer.Controllers.data.packet_write import *
 from GameServer.Controllers.data.planet import PLANET_MAP_TABLE
-from GameServer.Controllers.data.raid_event import build_raid_event_message
+from GameServer.Controllers.data.raid_event import build_raid_event_message, get_next_raid_start_time, is_raid_event_open
 import MySQL.Interface as MySQL
 from Packet.Write import Write as PacketWrite
 
@@ -570,6 +570,17 @@ def set_level(**_args):
     # Read level from the incoming packet
     selected_level = int(_args['packet'].get_byte(2))
 
+    if room['game_type'] == MODE_PLANET and selected_level == 52 and not is_raid_event_open():
+        next_start = get_next_raid_start_time()
+        Lobby.chat_message(
+            _args['client'],
+            '[Raid] O Cerco da Fenda Sombria está fechado. Tente novamente às {0}.'.format(
+                next_start.strftime('%H:%M')
+            ),
+            2
+        )
+        return
+
     # Check if the selected level is in our map table
     if selected_level not in room['maps']:
         selected_level = 0
@@ -802,6 +813,17 @@ def start_game(**_args):
                 _args['client']['character']['position']) != 1:
             start.append_bytes(bytearray([0x00, 0x6C]))
             return _args['client']['socket'].sendall(start.packet)
+
+    if room['game_type'] == MODE_PLANET and room['level'] == 52 and not is_raid_event_open():
+        next_start = get_next_raid_start_time()
+        Lobby.chat_message(
+            _args['client'],
+            '[Raid] O Cerco da Fenda Sombria está fechado. Tente novamente às {0}.'.format(
+                next_start.strftime('%H:%M')
+            ),
+            2
+        )
+        return
 
     # If the room has stat_overrides, send all clients in the room their modified stats
     if len(room['stat_override']) > 0:

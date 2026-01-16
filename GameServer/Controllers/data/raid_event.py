@@ -1,44 +1,38 @@
 import datetime
 import math
 
-import MySQL.Interface as MySQL
-
 RAID_EVENT_MAP_ID = 52
 RAID_EVENT_NAME = 'O Cerco da Fenda Sombria'
+RAID_OPEN_TIME = datetime.time(20, 0)
+RAID_CLOSE_TIME = datetime.time(21, 0)
 
 
-def _fetch_next_raid_event(_args, now, map_id):
-    mysql_connection = None
-    mysql_cursor = _args.get('mysql')
-    if mysql_cursor is None:
-        mysql_connection = MySQL.get_connection()
-        mysql_cursor = mysql_connection.cursor(dictionary=True)
+def _build_window(now):
+    start = datetime.datetime.combine(now.date(), RAID_OPEN_TIME)
+    end = datetime.datetime.combine(now.date(), RAID_CLOSE_TIME)
+    if end <= start:
+        end = start + datetime.timedelta(hours=1)
+    if now >= end:
+        start = start + datetime.timedelta(days=1)
+        end = end + datetime.timedelta(days=1)
+    return start, end
 
-    mysql_cursor.execute(
-        """SELECT `map_id`, `start_time`, `end_time`
-        FROM `raid_event`
-        WHERE `map_id` = %s AND `end_time` >= %s
-        ORDER BY `start_time` ASC
-        LIMIT 1""", [
-            map_id,
-            now
-        ])
-    row = mysql_cursor.fetchone()
-    if mysql_connection:
-        mysql_connection.close()
-    return row
+
+def get_next_raid_start_time(now=None):
+    current_time = now or datetime.datetime.now()
+    start, _ = _build_window(current_time)
+    return start
+
+
+def is_raid_event_open(now=None):
+    current_time = now or datetime.datetime.now()
+    start, end = _build_window(current_time)
+    return start <= current_time <= end
 
 
 def build_raid_event_message(_args, now=None, map_id=RAID_EVENT_MAP_ID):
     current_time = now or datetime.datetime.now()
-    raid_event = _fetch_next_raid_event(_args, current_time, map_id)
-    if not raid_event:
-        return None
-
-    start_time = raid_event.get('start_time')
-    end_time = raid_event.get('end_time')
-    if not start_time or not end_time:
-        return None
+    start_time, end_time = _build_window(current_time)
 
     if current_time < start_time:
         minutes = max(0, math.ceil((start_time - current_time).total_seconds() / 60))

@@ -4,9 +4,12 @@ __copyright__ = "Copyright (C) 2024"
 __version__ = "1.0"
 
 from GameServer.Controllers.data.planet import PLANET_MISSIONS
+from GameServer.Controllers.data.raid_event import is_raid_event_open, RAID_EVENT_MAP_ID
 
 
 def get_missions_for_map(map_id):
+    if map_id == RAID_EVENT_MAP_ID and not is_raid_event_open():
+        return []
     return PLANET_MISSIONS.get(map_id, [])
 
 
