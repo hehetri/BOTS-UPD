@@ -7,6 +7,7 @@ from Packet.Write import Write as PacketWrite
 from GameServer.Controllers import Guild, Friend, Room, block, Missions, LoginDiary
 from GameServer.Controllers.Character import get_items
 from GameServer.Controllers.data.lobby import LOBBY_MSG
+from GameServer.Controllers.data.raid_event import build_raid_event_message
 from GameServer.Controllers.Inbox import unread_message_notification
 from GameServer.Controllers.gifts import gift_count
 from ratelimit import CHAT_RATE_LIMIT
@@ -321,6 +322,10 @@ def get_lobby(**_args):
         if _weekend_event_active() and 'weekend' not in event_flags:
             chat_message(_args['client'], '[Evento] Evento semanal ativo! Ganhe 50% de EXP extra em planeta.', 3)
             event_flags.add('weekend')
+
+        raid_message = build_raid_event_message(_args)
+        if raid_message:
+            chat_message(_args['client'], raid_message[0], raid_message[1])
 
         # Update client status
         _args['client']['new'] = False

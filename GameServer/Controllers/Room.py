@@ -21,6 +21,7 @@ from GameServer.Controllers.data.game import *
 from GameServer.Controllers.data.military import MILITARY_MAP_TABLE
 from GameServer.Controllers.data.packet_write import *
 from GameServer.Controllers.data.planet import PLANET_MAP_TABLE
+from GameServer.Controllers.data.raid_event import build_raid_event_message
 import MySQL.Interface as MySQL
 from Packet.Write import Write as PacketWrite
 
@@ -348,6 +349,10 @@ def add_slot(_args, room_id, client, broadcast=False):
                           'This game type allows you to change player\'s statistics. For more information, '
                           'type @stat-help',
                           2)
+
+    raid_message = build_raid_event_message(_args)
+    if raid_message:
+        Lobby.chat_message(_args['client'], raid_message[0], raid_message[1])
 
 
 '''

@@ -22,6 +22,7 @@ from GameServer.Controllers.data.military import MILITARY_BASE
 from GameServer.Controllers.data.packet_write import REPLY_ROOM_EXIT_SHOP
 from GameServer.Controllers.data.planet import PLANET_MAP_TABLE, PLANET_BOXES, PLANET_BOX_MOBS, PLANET_DROPS, \
     PLANET_ASSISTS, PLANET_CANISTER_EXCEPTIONS
+from GameServer.Controllers.data.raid_event import build_raid_event_message
 from GameServer.Controllers.handlers import moderation
 from Packet.Write import Write as PacketWrite
 
@@ -118,6 +119,16 @@ def load_finish(_args, room):
                     message=line['message'],
                     color=2 if line['completed'] else 3
                 )
+
+    raid_message = build_raid_event_message(_args)
+    if raid_message:
+        raid_packet = Lobby.chat_message(
+            target=None,
+            message=raid_message[0],
+            color=raid_message[1],
+            return_packet=True
+        )
+        _args['connection_handler'].room_broadcast(room['id'], raid_packet)
 
     # Start new countdown timer thread, but only for Planet and DeathMatch modes
     if room['game_type'] in [MODE_PLANET, MODE_DEATHMATCH]:

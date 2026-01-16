@@ -61,7 +61,7 @@ PLANET_MAP_TABLE = {
     49: (1463, 48, 48, 5200, 49),  # [Level 48] Bloodway (Elite)
     50: (90, 7.5, 1, 1100, 17),  # [Level 1] Training Ring
     51: (90, 7.5, 3, 1100, 17),  # [Level 1] Training Ring
-    52: (180, 18, 8, 2800, 21),  # [Level 08] The Fallen (Elite)
+    52: (3000, 60, 60, 12000, 120),  # [Raid] O Cerco da Fenda Sombria
     53: (383, 36, 18, 3500, 27),  # [Level 18] Lava Field (Elite)
     54: (743, 45, 28, 4000, 25),  # [Level 28] The Pirate (Elite)
     55: (1170, 45, 38, 5000, 40),  # [Level 38] Evil Port (Elite)
@@ -3759,6 +3759,59 @@ PLANET_DROPS = {
     }
 }
 
+PLANET_MIRROR_MAPS = {
+    36: 0,
+    37: 1,
+    38: 31,
+    39: 32,
+    40: 33,
+    41: 34,
+    42: 35,
+    43: 0,
+    44: 1,
+    45: 31,
+    46: 32,
+    47: 33,
+    48: 34,
+    49: 35,
+    50: 0,
+    51: 1,
+    52: 35,
+    53: 32,
+    54: 33,
+    55: 34,
+    56: 34,
+    57: 35,
+    58: 0,
+    59: 1,
+    60: 31,
+    61: 32,
+    62: 33,
+    63: 34,
+    64: 35,
+    65: 0,
+    66: 1
+}
+
+
+def _clone_map_data(target_map, source_map):
+    if target_map not in PLANET_BOX_MOBS and source_map in PLANET_BOX_MOBS:
+        PLANET_BOX_MOBS[target_map] = list(PLANET_BOX_MOBS[source_map])
+    if target_map not in PLANET_ASSISTS and source_map in PLANET_ASSISTS:
+        PLANET_ASSISTS[target_map] = list(PLANET_ASSISTS[source_map])
+    if target_map not in PLANET_CANISTER_EXCEPTIONS and source_map in PLANET_CANISTER_EXCEPTIONS:
+        PLANET_CANISTER_EXCEPTIONS[target_map] = list(PLANET_CANISTER_EXCEPTIONS[source_map])
+    if target_map not in PLANET_BOXES and source_map in PLANET_BOXES:
+        PLANET_BOXES[target_map] = list(PLANET_BOXES[source_map])
+    if target_map not in PLANET_DROPS and source_map in PLANET_DROPS:
+        PLANET_DROPS[target_map] = {
+            box_type: list(items) for box_type, items in PLANET_DROPS[source_map].items()
+        }
+
+
+for new_map, base_map in PLANET_MIRROR_MAPS.items():
+    _clone_map_data(new_map, base_map)
+
 
 def _build_planet_missions():
     missions = {}
@@ -3771,6 +3824,34 @@ def _build_planet_missions():
             boss_id = PLANET_BOX_MOBS[map_id][-1]
 
         missions.setdefault(map_id, [])
+        if map_id == 52:
+            missions[map_id].append({
+                'key': 'raid_waves_52',
+                'type': 'kills',
+                'name': 'Derrote 120 monstros corrompidos na raid O Cerco da Fenda Sombria',
+                'required': 120,
+                'reward_exp': int(base_exp * 1.5),
+                'target_id': None
+            })
+            missions[map_id].append({
+                'key': 'raid_survive_52',
+                'type': 'complete',
+                'name': 'Sobreviva ao Cerco da Fenda Sombria e conclua a raid',
+                'required': 1,
+                'reward_exp': int(base_exp * 1.2),
+                'target_id': None
+            })
+            if boss_id is not None:
+                missions[map_id].append({
+                    'key': 'raid_boss_52',
+                    'type': 'boss',
+                    'name': 'Elimine o Guardião da Fenda Sombria',
+                    'required': 1,
+                    'reward_exp': int(base_exp * 2.0),
+                    'target_id': boss_id
+                })
+            continue
+
         if map_id % 2 == 0:
             missions[map_id].append({
                 'key': 'kills_{0}'.format(map_id),
