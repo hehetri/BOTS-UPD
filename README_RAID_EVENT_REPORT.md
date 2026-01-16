@@ -10,16 +10,17 @@ com controle de janela de horário via script, bloqueio do mapa quando o evento 
 - Início do jogo bloqueado caso a sala esteja configurada para o mapa 52 e o evento esteja fechado.
 - Missões do mapa 52 desativadas automaticamente quando o evento RAID está fechado.
 - Mensagens de status do evento continuam sendo exibidas no lobby, na sala e no início da partida.
+- Drops do mapa 52 ajustados para itens raros (+4/+5) de múltiplos bot_types com chance aumentada.
 
 ## Arquivos modificados
 - `GameServer/Controllers/data/raid_event.py`
 - `GameServer/Controllers/Room.py`
 - `GameServer/Controllers/Missions.py`
+- `GameServer/Controllers/data/planet.py`
 
 ## Arquivos relacionados (já existentes)
 - `GameServer/Controllers/Lobby.py`
 - `GameServer/Controllers/Game.py`
-- `GameServer/Controllers/data/planet.py`
 
 ## Observações
 - Para alterar o horário da raid, ajuste `RAID_OPEN_TIME` e `RAID_CLOSE_TIME` em

@@ -3812,6 +3812,59 @@ def _clone_map_data(target_map, source_map):
 for new_map, base_map in PLANET_MIRROR_MAPS.items():
     _clone_map_data(new_map, base_map)
 
+PLANET_BOXES[52] = [
+    (BOX_GUN, 0.08),
+    (BOX_EF, 0.08),
+    (BOX_MINI_BOT, 0.08),
+    (BOX_HEAD, 0.10),
+    (BOX_BODY, 0.10),
+    (BOX_ARMS, 0.10)
+]
+
+PLANET_DROPS[52] = {
+    BOX_HEAD: [
+        (1110304, 0.17),  # StonehazardCRT(+4)
+        (1210504, 0.17),  # BladeShooterMIS(+4)
+        (1310504, 0.17),  # SticleSP(+4)
+        (1110305, 0.16),  # StonehazardCRT(+5)
+        (1210505, 0.16),  # BladeShooterMIS(+5)
+        (1310505, 0.16)  # SticleSP(+5)
+    ],
+    BOX_BODY: [
+        (1120304, 0.17),  # StonehazardTA(+4)
+        (1220504, 0.17),  # BladeShooterBST(+4)
+        (1320504, 0.17),  # SticleMX(+4)
+        (1120305, 0.16),  # StonehazardTA(+5)
+        (1220505, 0.16),  # BladeShooterBST(+5)
+        (1320505, 0.16)  # SticleMX(+5)
+    ],
+    BOX_ARMS: [
+        (1130304, 0.17),  # StonehazardTD(+4)
+        (1230504, 0.17),  # BladeShooterGUN(+4)
+        (1330504, 0.17),  # SticleTG(+4)
+        (1130305, 0.16),  # StonehazardTD(+5)
+        (1230505, 0.16),  # BladeShooterGUN(+5)
+        (1330505, 0.16)  # SticleTG(+5)
+    ],
+    BOX_GUN: [
+        (3021603, 0.40),  # WhiteBlazer(+3)
+        (3021503, 0.30),  # LightningGun(+3)
+        (3021602, 0.30)  # WhiteBlazer(+2)
+    ],
+    BOX_EF: [
+        (3031507, 0.30),  # SoundEnergyCRT(+3)
+        (3031508, 0.30),  # SoundEnergyMIS(+3)
+        (3031509, 0.30),  # SoundEnergyBST(+3)
+        (3031504, 0.10)  # SoundEnergyCRT(+2)
+    ],
+    BOX_MINI_BOT: [
+        (3011607, 0.25),  # BeholderCRT(+3)
+        (3011608, 0.25),  # BeholderMIS(+3)
+        (3011609, 0.25),  # BeholderBST(+3)
+        (3011507, 0.25)  # BabytankCRT(+3)
+    ]
+}
+
 
 def _build_planet_missions():
     missions = {}
