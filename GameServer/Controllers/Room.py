@@ -574,7 +574,7 @@ def set_level(**_args):
         next_start = get_next_raid_start_time()
         Lobby.chat_message(
             _args['client'],
-            '[Raid] O Cerco da Fenda Sombria está fechado. Tente novamente às {0}.'.format(
+            '[Raid] Siege of the Dark Rift is closed. Try again at {0}.'.format(
                 next_start.strftime('%H:%M')
             ),
             2
@@ -818,7 +818,7 @@ def start_game(**_args):
         next_start = get_next_raid_start_time()
         Lobby.chat_message(
             _args['client'],
-            '[Raid] O Cerco da Fenda Sombria está fechado. Tente novamente às {0}.'.format(
+            '[Raid] Siege of the Dark Rift is closed. Try again at {0}.'.format(
                 next_start.strftime('%H:%M')
             ),
             2

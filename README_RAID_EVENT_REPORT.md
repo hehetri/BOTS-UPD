@@ -1,27 +1,27 @@
-# Raid Event Report (Mapa 52)
+# Raid Event Report (Map 52)
 
-## Resumo
-Este relatório descreve as mudanças aplicadas para suportar o evento RAID "O Cerco da Fenda Sombria" (mapa 52),
-com controle de janela de horário via script, bloqueio do mapa quando o evento está fechado e ajuste das missões.
+## Summary
+This report describes the changes applied to support the RAID event "Siege of the Dark Rift" (map 52),
+including the scripted time window, blocking the map when the event is closed, and mission adjustments.
 
-## Mudanças principais
-- Evento RAID controlado por horário fixo no script (`20:00` até `21:00`), sem dependência do banco de dados.
-- Seleção do mapa 52 bloqueada quando o evento está fechado, com mensagem informando o próximo horário.
-- Início do jogo bloqueado caso a sala esteja configurada para o mapa 52 e o evento esteja fechado.
-- Missões do mapa 52 desativadas automaticamente quando o evento RAID está fechado.
-- Mensagens de status do evento continuam sendo exibidas no lobby, na sala e no início da partida.
-- Drops do mapa 52 ajustados para itens raros (+4/+5) de múltiplos bot_types com chance aumentada.
+## Key changes
+- RAID event controlled by a fixed script window (`20:00` to `21:00`), with no database dependency.
+- Map 52 selection blocked when the event is closed, with a message showing the next opening time.
+- Game start blocked if the room is set to map 52 while the event is closed.
+- Map 52 missions automatically disabled when the RAID event is closed.
+- Event status messages continue to be shown in the lobby, room, and at match start.
+- Map 52 drops adjusted to rare (+4/+5) items across multiple bot_types with increased rates.
 
-## Arquivos modificados
+## Modified files
 - `GameServer/Controllers/data/raid_event.py`
 - `GameServer/Controllers/Room.py`
 - `GameServer/Controllers/Missions.py`
 - `GameServer/Controllers/data/planet.py`
 
-## Arquivos relacionados (já existentes)
+## Related files (existing)
 - `GameServer/Controllers/Lobby.py`
 - `GameServer/Controllers/Game.py`
 
-## Observações
-- Para alterar o horário da raid, ajuste `RAID_OPEN_TIME` e `RAID_CLOSE_TIME` em
+## Notes
+- To change the raid schedule, adjust `RAID_OPEN_TIME` and `RAID_CLOSE_TIME` in
   `GameServer/Controllers/data/raid_event.py`.

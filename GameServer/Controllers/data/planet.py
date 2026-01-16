@@ -61,7 +61,7 @@ PLANET_MAP_TABLE = {
     49: (1463, 48, 48, 5200, 49),  # [Level 48] Bloodway (Elite)
     50: (90, 7.5, 1, 1100, 17),  # [Level 1] Training Ring
     51: (90, 7.5, 3, 1100, 17),  # [Level 1] Training Ring
-    52: (3000, 60, 60, 12000, 120),  # [Raid] O Cerco da Fenda Sombria
+    52: (3000, 60, 60, 12000, 120),  # [Raid] Siege of the Dark Rift
     53: (383, 36, 18, 3500, 27),  # [Level 18] Lava Field (Elite)
     54: (743, 45, 28, 4000, 25),  # [Level 28] The Pirate (Elite)
     55: (1170, 45, 38, 5000, 40),  # [Level 38] Evil Port (Elite)
@@ -3881,7 +3881,7 @@ def _build_planet_missions():
             missions[map_id].append({
                 'key': 'raid_waves_52',
                 'type': 'kills',
-                'name': 'Derrote 120 monstros corrompidos na raid O Cerco da Fenda Sombria',
+                'name': 'Defeat 120 corrupted monsters in the Siege of the Dark Rift raid',
                 'required': 120,
                 'reward_exp': int(base_exp * 1.5),
                 'target_id': None
@@ -3889,7 +3889,7 @@ def _build_planet_missions():
             missions[map_id].append({
                 'key': 'raid_survive_52',
                 'type': 'complete',
-                'name': 'Sobreviva ao Cerco da Fenda Sombria e conclua a raid',
+                'name': 'Survive the Siege of the Dark Rift and complete the raid',
                 'required': 1,
                 'reward_exp': int(base_exp * 1.2),
                 'target_id': None
@@ -3898,7 +3898,7 @@ def _build_planet_missions():
                 missions[map_id].append({
                     'key': 'raid_boss_52',
                     'type': 'boss',
-                    'name': 'Elimine o Guardião da Fenda Sombria',
+                    'name': 'Defeat the Dark Rift Guardian',
                     'required': 1,
                     'reward_exp': int(base_exp * 2.0),
                     'target_id': boss_id

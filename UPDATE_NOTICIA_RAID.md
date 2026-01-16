@@ -1,23 +1,23 @@
-# UPDATE: Evento RAID “O Cerco da Fenda Sombria” (Mapa 52)
+# UPDATE: RAID Event “Siege of the Dark Rift” (Map 52)
 
-## 🗓️ Horário do Evento
-- **Entrada:** 20:00
-- **Término:** 21:00
+## 🗓️ Event Schedule
+- **Entry:** 20:00
+- **End:** 21:00
 
-A raid agora é controlada por janela fixa no servidor. Fora desse horário, o mapa 52 fica indisponível e o jogo avisa o próximo horário de abertura.
+The raid is now controlled by a fixed server window. Outside this time, map 52 is unavailable and the game informs the next opening time.
 
-## ✅ O que mudou
-- **Evento RAID por script:** sem dependência de banco de dados para abrir/fechar.
-- **Bloqueio automático do mapa 52:** se a raid estiver fechada, o mapa não pode ser selecionado nem iniciado.
-- **Mensagens de status no jogo:** lobby, sala e partida avisam se a raid está abrindo, aberta ou perto de fechar.
-- **Missões da raid sincronizadas:** só aparecem quando o evento está ativo.
-- **Drops melhores e mais raros:** caixas do mapa 52 agora têm itens +4 e +5 de **vários bot_types** com **chance aumentada**.
+## ✅ What changed
+- **Scripted RAID event:** no database dependency to open/close.
+- **Automatic lock for map 52:** if the raid is closed, the map cannot be selected or started.
+- **In-game status messages:** lobby, room, and match announce when the raid is opening, open, or close to ending.
+- **Synced raid missions:** only appear while the event is active.
+- **Better and rarer drops:** map 52 boxes now include +4 and +5 items across **multiple bot_types** with **increased rates**.
 
-## 🎁 Recompensas Atualizadas
-- Itens raros e épicos (+4/+5) com maior taxa.
-- Melhoria no loot do chefe e nas caixas da raid.
+## 🎁 Updated Rewards
+- Rare and epic items (+4/+5) with higher rates.
+- Improved loot for the boss and raid boxes.
 
-## ⚠️ Aviso
-A raid falha caso o tempo se esgote ou todo o grupo seja derrotado.
+## ⚠️ Notice
+The raid fails if time runs out or the entire group is defeated.
 
-Prepare seu squad e boa caçada!
+Prepare your squad and good hunting!
