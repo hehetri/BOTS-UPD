@@ -6,6 +6,7 @@ including the scripted time window, blocking the map when the event is closed, a
 
 ## Key changes
 - RAID event controlled by a fixed script window (`20:00` to `21:00`), with no database dependency.
+- RAID event can be enabled/disabled via `RAID_EVENT_ENABLED` in the script (disables messages and access).
 - Map 52 selection blocked when the event is closed, with a message showing the next opening time.
 - Game start blocked if the room is set to map 52 while the event is closed.
 - Map 52 missions automatically disabled when the RAID event is closed.

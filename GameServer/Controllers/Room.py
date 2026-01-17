@@ -571,14 +571,9 @@ def set_level(**_args):
     selected_level = int(_args['packet'].get_byte(2))
 
     if room['game_type'] == MODE_PLANET and selected_level == 52 and not is_raid_event_open():
-        next_start = get_next_raid_start_time()
-        Lobby.chat_message(
-            _args['client'],
-            '[Raid] Siege of the Dark Rift is closed. Try again at {0}.'.format(
-                next_start.strftime('%H:%M')
-            ),
-            2
-        )
+        error = PacketWrite(header=REPLY_START_GAME)
+        error.append_bytes(bytearray([0x00, 0x3D]))
+        _args['socket'].sendall(error.packet)
         return
 
     # Check if the selected level is in our map table
@@ -815,15 +810,8 @@ def start_game(**_args):
             return _args['client']['socket'].sendall(start.packet)
 
     if room['game_type'] == MODE_PLANET and room['level'] == 52 and not is_raid_event_open():
-        next_start = get_next_raid_start_time()
-        Lobby.chat_message(
-            _args['client'],
-            '[Raid] Siege of the Dark Rift is closed. Try again at {0}.'.format(
-                next_start.strftime('%H:%M')
-            ),
-            2
-        )
-        return
+        start.append_bytes([0x00, 0x3D])
+        return _args['client']['socket'].sendall(start.packet)
 
     # If the room has stat_overrides, send all clients in the room their modified stats
     if len(room['stat_override']) > 0:

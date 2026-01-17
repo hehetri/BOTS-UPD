@@ -3,6 +3,7 @@ import math
 
 RAID_EVENT_MAP_ID = 52
 RAID_EVENT_NAME = 'Siege of the Dark Rift'
+RAID_EVENT_ENABLED = True
 RAID_OPEN_TIME = datetime.time(20, 0)
 RAID_CLOSE_TIME = datetime.time(21, 0)
 
@@ -19,18 +20,24 @@ def _build_window(now):
 
 
 def get_next_raid_start_time(now=None):
+    if not RAID_EVENT_ENABLED:
+        return None
     current_time = now or datetime.datetime.now()
     start, _ = _build_window(current_time)
     return start
 
 
 def is_raid_event_open(now=None):
+    if not RAID_EVENT_ENABLED:
+        return False
     current_time = now or datetime.datetime.now()
     start, end = _build_window(current_time)
     return start <= current_time <= end
 
 
 def build_raid_event_message(_args, now=None, map_id=RAID_EVENT_MAP_ID):
+    if not RAID_EVENT_ENABLED:
+        return None
     current_time = now or datetime.datetime.now()
     start_time, end_time = _build_window(current_time)
 
