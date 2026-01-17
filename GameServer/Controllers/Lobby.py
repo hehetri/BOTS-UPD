@@ -12,10 +12,9 @@ from GameServer.Controllers.Inbox import unread_message_notification
 from GameServer.Controllers.gifts import gift_count
 from ratelimit import CHAT_RATE_LIMIT
 from pyrate_limiter import BucketFullException
-import datetime
-import os
 
 from GameServer.Controllers.admin_commands import handle_admin_command
+from GameServer.Controllers.data.events import is_christmas_event_active, is_weekend_event_active
 
 """
 This method will send a chat message to a specific target client
@@ -54,17 +53,6 @@ def message_box(target, title, message):
         target['socket'].sendall(packet.packet)
     except Exception:
         pass
-
-
-def _christmas_event_active():
-    now = datetime.datetime.now()
-    return now.month == 12 and 18 <= now.day <= 31
-
-
-def _weekend_event_active():
-    today = datetime.datetime.today()
-    now = datetime.datetime.now()
-    return (today.weekday() >= 5) or (now.month == 2 and now.day == 1)
 
 
 """
@@ -315,11 +303,11 @@ def get_lobby(**_args):
         message_box(_args['client'], 'MESSAGE', diary_message)
 
         event_flags = _args['client'].setdefault('event_notified', set())
-        if _christmas_event_active() and 'christmas' not in event_flags:
+        if is_christmas_event_active() and 'christmas' not in event_flags:
             chat_message(_args['client'], '[Evento] Evento de Natal ativo! Procure por surpresas especiais.', 3)
             event_flags.add('christmas')
 
-        if _weekend_event_active() and 'weekend' not in event_flags:
+        if is_weekend_event_active() and 'weekend' not in event_flags:
             chat_message(_args['client'], '[Evento] Evento semanal ativo! Ganhe 50% de EXP extra em planeta.', 3)
             event_flags.add('weekend')
 
