@@ -1,7 +1,6 @@
-import datetime
-
 from GameServer.Controllers import Room, Lobby
 from GameServer.Controllers.data.game import MODE_PLANET
+from GameServer.Controllers.data.events import is_weekend_event_active
 from Packet.Write import Write as PacketWrite
 
 """
@@ -26,9 +25,7 @@ This method will execute once the game is started
 def start_game(_args, room):
 
     # Determine whether we are awarding +50% experience
-    awarding = (datetime.datetime.today().weekday() >= 5 or (
-                datetime.datetime.now().month == 12 and (datetime.datetime.now().day == 11))) and room[
-                   'game_type'] == MODE_PLANET
+    awarding = is_weekend_event_active() and room['game_type'] == MODE_PLANET
 
     # If we are awarding more experience, mutate the experience modifier
     if awarding:

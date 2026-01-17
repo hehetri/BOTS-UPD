@@ -21,6 +21,7 @@ from GameServer.Controllers.data.game import *
 from GameServer.Controllers.data.military import MILITARY_MAP_TABLE
 from GameServer.Controllers.data.packet_write import *
 from GameServer.Controllers.data.planet import PLANET_MAP_TABLE
+from GameServer.Controllers.data.raid_event import build_raid_event_message, get_next_raid_start_time, is_raid_event_open
 import MySQL.Interface as MySQL
 from Packet.Write import Write as PacketWrite
 
@@ -349,6 +350,10 @@ def add_slot(_args, room_id, client, broadcast=False):
                           'type @stat-help',
                           2)
 
+    raid_message = build_raid_event_message(_args)
+    if raid_message:
+        Lobby.chat_message(_args['client'], raid_message[0], raid_message[1])
+
 
 '''
 This method will remove a player from the room
@@ -564,6 +569,12 @@ def set_level(**_args):
 
     # Read level from the incoming packet
     selected_level = int(_args['packet'].get_byte(2))
+
+    if room['game_type'] == MODE_PLANET and selected_level == 52 and not is_raid_event_open():
+        error = PacketWrite(header=REPLY_START_GAME)
+        error.append_bytes(bytearray([0x00, 0x3D]))
+        _args['socket'].sendall(error.packet)
+        return
 
     # Check if the selected level is in our map table
     if selected_level not in room['maps']:
@@ -797,6 +808,10 @@ def start_game(**_args):
                 _args['client']['character']['position']) != 1:
             start.append_bytes(bytearray([0x00, 0x6C]))
             return _args['client']['socket'].sendall(start.packet)
+
+    if room['game_type'] == MODE_PLANET and room['level'] == 52 and not is_raid_event_open():
+        start.append_bytes([0x00, 0x3D])
+        return _args['client']['socket'].sendall(start.packet)
 
     # If the room has stat_overrides, send all clients in the room their modified stats
     if len(room['stat_override']) > 0:
